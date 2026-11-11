@@ -1,0 +1,19 @@
+[build-system]
+requires = ["setuptools>=77"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "siamese-pore-gnn"
+version = "0.1.0"
+description = "Siamese graph learning for ceramic strength prediction from pore descriptors"
+requires-python = ">=3.10"
+license = "MIT"
+readme = "README.md"
+dependencies = [
+    "torch==2.4.0", "torch-geometric==2.7.0", "torch-cluster==1.6.3",
+    "torch-scatter==2.1.2", "numpy==2.2.6", "pandas==2.3.3",
+    "scikit-learn==1.7.2", "openpyxl==3.1.5", "matplotlib==3.10.8",
+]
+
+[tool.setuptools.packages.find]
+include = ["poregnn*"]

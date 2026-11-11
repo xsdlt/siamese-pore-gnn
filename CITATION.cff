@@ -1,0 +1,35 @@
+cff-version: 1.2.0
+message: "Please cite the associated manuscript when using this software."
+type: software
+title: "Siamese Pore GNN"
+version: 0.1.0
+license: MIT
+authors:
+  - family-names: Hu
+    given-names: Yuhang
+  - family-names: Wang
+    given-names: Anzhe
+  - family-names: Zhang
+    given-names: Junyi
+  - family-names: Jiang
+    given-names: Ye
+  - family-names: He
+    given-names: Hao
+  - family-names: Xiong
+    given-names: Wenzheng
+preferred-citation:
+  type: unpublished
+  title: "Interpretable Siamese-GNN for Anisotropic Defect-Strength Mapping and Failure Localization in Structural Ceramics"
+  authors:
+    - family-names: Hu
+      given-names: Yuhang
+    - family-names: Wang
+      given-names: Anzhe
+    - family-names: Zhang
+      given-names: Junyi
+    - family-names: Jiang
+      given-names: Ye
+    - family-names: He
+      given-names: Hao
+    - family-names: Xiong
+      given-names: Wenzheng

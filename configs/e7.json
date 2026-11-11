@@ -1,0 +1,96 @@
+{
+  "dataset": {
+    "workbook": "data/pore_features.xlsx",
+    "sample_ids": [
+      "1",
+      "2",
+      "3",
+      "4",
+      "5",
+      "6",
+      "7",
+      "8",
+      "9",
+      "10",
+      "11",
+      "12",
+      "13",
+      "14",
+      "15",
+      "16",
+      "17",
+      "18",
+      "19",
+      "20",
+      "21"
+    ],
+    "test_ids": [
+      "2",
+      "5",
+      "13"
+    ],
+    "excluded_ids": [
+      "22"
+    ],
+    "target_column": "强度[MPa]",
+    "coordinates": [
+      "中间 x [µm]",
+      "中间 y [µm]",
+      "中间 z [µm]"
+    ],
+    "roi_x_min": -2500,
+    "roi_x_max": -2000,
+    "node_features": [
+      "直径 [µm]",
+      "球度",
+      "Angle_with_Load",
+      "投影尺寸 x [µm]",
+      "投影尺寸 y [µm]",
+      "投影尺寸 z [µm]",
+      "Local_Density",
+      "Ratio_XY"
+    ],
+    "wide_features": [
+      "ROI_Rmax",
+      "ROI_Mean_Diameter",
+      "ROI_Vol_Fraction",
+      "ROI_Mean_Sphericity"
+    ]
+  },
+  "graph": {
+    "radius": 100000.0,
+    "max_neighbors": 20
+  },
+  "model": {
+    "pools": [
+      "Max",
+      "Mean",
+      "TopK",
+      "Attn"
+    ],
+    "hidden_dim": 32,
+    "compress_dim": 32,
+    "comparison_dim": 64,
+    "top_k": 5,
+    "dropout": 0.14903,
+    "architecture": "experts4"
+  },
+  "training": {
+    "epochs": 80,
+    "batch_size": 16,
+    "learning_rate": 0.00290946,
+    "weight_decay": 2.89857e-05,
+    "max_pair_weight": 5.0,
+    "cosine_t_max": 80,
+    "min_learning_rate": 1e-06,
+    "seed": 43,
+    "seed_policy": "per_fit_reset"
+  },
+  "runtime": {
+    "device": "cuda",
+    "torch_threads": 6
+  },
+  "prediction": {
+    "endpoint_extension_mpa": 50.0
+  }
+}
