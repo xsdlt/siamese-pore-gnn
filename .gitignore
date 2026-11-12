@@ -29,4 +29,4 @@ checkpoints/
 *.zip
 
 !data/pore_features.xlsx
-!models/figure6_ig.pt
+!models/ig_model.pt

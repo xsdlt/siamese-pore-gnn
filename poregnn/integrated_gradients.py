@@ -1,4 +1,4 @@
-"""Compute integrated gradients and render Figure 6."""
+"""Compute integrated gradients and render the attribution figure."""
 
 import argparse
 from pathlib import Path
@@ -54,7 +54,7 @@ class PoreEncoder(nn.Module):
         return self.fc(torch.cat((self.bn(pooled), wide), dim=1))
 
 
-class Figure6SiameseModel(nn.Module):
+class IntegratedGradientsModel(nn.Module):
     def __init__(self, node_dim, wide_dim, hidden_dim, top_k):
         super().__init__()
         self.experts = nn.ModuleList(
@@ -81,7 +81,6 @@ def query_inputs(frame, scalers):
     pos = roi[COORDINATES].to_numpy() * coord["scale_"] + coord["min_"]
     edges = to_undirected(radius_graph(torch.tensor(pos, dtype=torch.float), r=100000,
                                       loop=False, max_num_neighbors=20))
-    # Figure 6 uses the sum of pore diameters for this query input.
     descriptors = {
         "ROI_Rmax": diameters.max(), "ROI_Mean_Diameter": diameters.mean(),
         "ROI_Vol_Fraction": diameters.sum(), "ROI_Mean_Sphericity": roi["球度"].mean(),
@@ -152,7 +151,7 @@ def render(attributions, feature_means, output):
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--checkpoint", type=Path, default=Path("models/figure6_ig.pt"))
+    parser.add_argument("--checkpoint", type=Path, default=Path("models/ig_model.pt"))
     parser.add_argument("--data", type=Path, default=Path("data/pore_features.xlsx"))
     parser.add_argument("--output", type=Path, default=Path("outputs/figure6"))
     args = parser.parse_args()
@@ -160,7 +159,7 @@ def main():
     bundle = torch.load(args.checkpoint, map_location="cpu", weights_only=True)
     scalers = bundle["scalers"]
     names = scalers["node_scaler"]["feature_names_in_"]
-    model = Figure6SiameseModel(len(names), len(scalers["wide_scaler"]["feature_names_in_"]),
+    model = IntegratedGradientsModel(len(names), len(scalers["wide_scaler"]["feature_names_in_"]),
                         **bundle["architecture"]).eval()
     model.load_state_dict(bundle["model_state"])
     references = bundle["references"]
