@@ -1,4 +1,4 @@
-"""Fit E7, evaluate its held-out specimens, and save a prediction bundle."""
+"""Train the Siamese graph model and predict held-out specimen strengths."""
 
 import argparse
 import json
@@ -22,9 +22,9 @@ def evaluate(fitted, specimens, device):
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--config", type=Path, default=Path("configs/e7.json"))
+    parser.add_argument("--config", type=Path, default=Path("configs/siamese_gnn.json"))
     parser.add_argument("--data", type=Path)
-    parser.add_argument("--output", type=Path, default=Path("outputs/e7"))
+    parser.add_argument("--output", type=Path, default=Path("outputs/siamese_gnn"))
     parser.add_argument("--device", choices=("auto", "cpu", "cuda"), default="auto")
     parser.add_argument("--loocv", action="store_true", help="Also evaluate leave-one-out on the development set.")
     args = parser.parse_args()

@@ -1,4 +1,4 @@
-"""Regenerate manuscript Figure 6 from its archived three-expert model."""
+"""Compute integrated gradients and render Figure 6."""
 
 import argparse
 from pathlib import Path
@@ -26,7 +26,7 @@ LABELS = {
 }
 
 
-class LegacyExpert(nn.Module):
+class PoreEncoder(nn.Module):
     def __init__(self, node_dim, hidden, wide_dim, pooling, k):
         super().__init__()
         self.conv1 = GraphConv(node_dim, hidden, aggr="add")
@@ -54,11 +54,11 @@ class LegacyExpert(nn.Module):
         return self.fc(torch.cat((self.bn(pooled), wide), dim=1))
 
 
-class LegacyModel(nn.Module):
+class Figure6SiameseModel(nn.Module):
     def __init__(self, node_dim, wide_dim, hidden_dim, top_k):
         super().__init__()
         self.experts = nn.ModuleList(
-            LegacyExpert(node_dim, hidden_dim, wide_dim, pool, top_k)
+            PoreEncoder(node_dim, hidden_dim, wide_dim, pool, top_k)
             for pool in ("top_k", "attention", "mean_max")
         )
         self.fusion = nn.Sequential(nn.Linear(96, 64), nn.BatchNorm1d(64),
@@ -81,7 +81,7 @@ def query_inputs(frame, scalers):
     pos = roi[COORDINATES].to_numpy() * coord["scale_"] + coord["min_"]
     edges = to_undirected(radius_graph(torch.tensor(pos, dtype=torch.float), r=100000,
                                       loop=False, max_num_neighbors=20))
-    # Preserve the query descriptor used for Figure 6.
+    # Figure 6 uses the sum of pore diameters for this query input.
     descriptors = {
         "ROI_Rmax": diameters.max(), "ROI_Mean_Diameter": diameters.mean(),
         "ROI_Vol_Fraction": diameters.sum(), "ROI_Mean_Sphericity": roi["球度"].mean(),
@@ -160,7 +160,7 @@ def main():
     bundle = torch.load(args.checkpoint, map_location="cpu", weights_only=True)
     scalers = bundle["scalers"]
     names = scalers["node_scaler"]["feature_names_in_"]
-    model = LegacyModel(len(names), len(scalers["wide_scaler"]["feature_names_in_"]),
+    model = Figure6SiameseModel(len(names), len(scalers["wide_scaler"]["feature_names_in_"]),
                         **bundle["architecture"]).eval()
     model.load_state_dict(bundle["model_state"])
     references = bundle["references"]

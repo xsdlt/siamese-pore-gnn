@@ -1,4 +1,4 @@
-"""Estimate whole-pore and within-pore Shapley attributions for E7."""
+"""Estimate whole-pore and within-pore Shapley values."""
 
 import argparse
 from pathlib import Path
@@ -126,7 +126,7 @@ def explain(fitted, specimen, references, output, device, permutations, top, see
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--checkpoint", type=Path, default=Path("outputs/e7/model.pt"))
+    parser.add_argument("--checkpoint", type=Path, default=Path("outputs/siamese_gnn/model.pt"))
     parser.add_argument("--data", type=Path, default=Path("data/pore_features.xlsx"))
     parser.add_argument("--specimen", action="append", help="Worksheet ID. Repeat for multiple specimens.")
     parser.add_argument("--output", type=Path, default=Path("outputs/shapley"))
@@ -141,7 +141,7 @@ def main():
     device = resolve_device(args.device)
     fitted = load_bundle(args.checkpoint, device)
     if fitted.config["model"]["architecture"] != "experts4":
-        parser.error("Supply the four-expert E7 checkpoint.")
+        parser.error("Supply a four-encoder checkpoint from poregnn.train.")
     dataset = fitted.config["dataset"]
     specimens = load_specimens(args.data, dataset, args.specimen or dataset["test_ids"], require_targets=False)
     with torch.inference_mode():

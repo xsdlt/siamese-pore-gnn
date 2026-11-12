@@ -1,4 +1,4 @@
-"""Predict specimen strengths from a saved E7 model bundle."""
+"""Predict specimen strengths from a trained Siamese graph model."""
 
 import argparse
 from pathlib import Path
@@ -13,10 +13,10 @@ from .training import resolve_device
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--checkpoint", type=Path, default=Path("outputs/e7/model.pt"))
+    parser.add_argument("--checkpoint", type=Path, default=Path("outputs/siamese_gnn/model.pt"))
     parser.add_argument("--data", type=Path, default=Path("data/pore_features.xlsx"))
     parser.add_argument("--specimen", action="append", help="Worksheet ID. Repeat for multiple specimens.")
-    parser.add_argument("--output", type=Path, default=Path("outputs/e7/predictions.csv"))
+    parser.add_argument("--output", type=Path, default=Path("outputs/siamese_gnn/predictions.csv"))
     parser.add_argument("--device", choices=("auto", "cpu", "cuda"), default="auto")
     args = parser.parse_args()
     torch.set_num_threads(1)

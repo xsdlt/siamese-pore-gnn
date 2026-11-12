@@ -42,7 +42,7 @@ def rank_to_strength_tensor(rank_score, strengths, extension=50.):
     strengths = torch.as_tensor(sorted(strengths), dtype=rank_score.dtype, device=rank_score.device)
     values = torch.cat([strengths[:1] - extension, strengths, strengths[-1:] + extension])
     index = rank_score - .5
-    # value[0] corresponds to coordinate -1. Linear endpoint extrapolation is retained.
+    # value[0] corresponds to coordinate -1. Use linear extrapolation at the endpoints.
     left = (torch.floor(index).long() + 1).clamp(0, len(values) - 2)
     frac = index - (left.to(index.dtype) - 1)
     return values[left] + frac * (values[left + 1] - values[left])

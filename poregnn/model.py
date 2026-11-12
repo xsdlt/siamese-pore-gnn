@@ -1,4 +1,4 @@
-"""Explicit shared/three-expert/four-expert encoders for the new comparison."""
+"""Graph convolution and pooling for the Siamese pore model."""
 import torch
 from torch import nn
 from torch.nn import functional as F
